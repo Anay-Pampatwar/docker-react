@@ -1,0 +1,19 @@
+version: '3'
+services:
+  web:
+    build: 
+      context: . # this line is to tell docker to look for the dockerfile in the current directory
+      dockerfile: Dockerfile.dev # this line is to tell docker to use the dockerfile named Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules # this line is to mount the node_modules directory in the container to the node_modules directory in the current directory so that the container can see the node_modules directory and run the app
+      - .:/app # this is the line that I added to the original file to mount the current directory to the container directory /app so that the container can see the files in the current directory and run the app
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: ["npm", "run", "test"]
